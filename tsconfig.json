@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2018",                        // Compila a una versión de ES compatible
+    "module": "commonjs",                      // Usa el sistema de módulos CommonJS (nativo de Node.js)
+    "outDir": "./dist",                        // Directorio de salida para los archivos JavaScript compilados
+    "rootDir": "./src",                        // Directorio raíz de tus archivos fuente TypeScript
+    "strict": true,                            // Habilita todas las opciones estrictas de chequeo de tipos (¡muy recomendado!)
+    "esModuleInterop": true,                   // Permite importar módulos CommonJS como módulos ES
+    "skipLibCheck": true,                      // Omite la verificación de tipos para los archivos de declaración (para un inicio más rápido)
+    "forceConsistentCasingInFileNames": true,  // Obliga a que los nombres de archivo y sus referencias tengan el mismo casing
+    "resolveJsonModule": true                  // Permite importar archivos .json
+  },
+  "include": [
+    "src/**/*.ts"                              // Incluye todos los archivos .ts dentro de la carpeta src
+  ],
+  "exclude": [
+    "node_modules"                             // Excluye la carpeta node_modules de la compilación
+  ]
+}
