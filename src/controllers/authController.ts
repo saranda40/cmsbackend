@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import db from '../config/db';
 import { tbl_usuarios } from '../models/user';
-import { JWT_SECRET } from '../config/jwt';
+import { JWT_SECRET } from '../utils/jwt';
 
 const saltRounds = 10;
 

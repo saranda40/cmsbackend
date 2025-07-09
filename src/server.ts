@@ -2,15 +2,18 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
+import cors from 'cors';
 import db from './config/db'; // Importar para asegurar la conexión y tablas
 import authRoutes from './routes/authRoutes';
 import landingPageRoutes from './routes/landingPageRoutes';
+import { corsConfig } from './config/cors';
 
 dotenv.config(); // Cargar variables de entorno
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors(corsConfig))
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

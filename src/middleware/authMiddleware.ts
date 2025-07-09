@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from "../config/jwt";
+import { JWT_SECRET } from "../utils/jwt";
 
 // Extender el objeto Request de Express para añadir la propiedad 'user'
 declare global {
