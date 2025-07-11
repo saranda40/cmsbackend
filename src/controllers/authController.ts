@@ -9,20 +9,20 @@ import { JWT_SECRET } from '../utils/jwt';
 const saltRounds = 10;
 
 export const registerUser = async (req: Request, res: Response) => {
-    const { username, password } = req.body;
-
-    if (!username || !password) {
+    const { email, password } = req.body;
+  
+    if (!email || !password) {
         return res.status(400).json({ error: 'Usuario y contraseña son obligatorios.' });
     }
 
     try {
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        db.run(`INSERT INTO users (username, password_hash) VALUES (?, ?)`,
-            [username, passwordHash],
+        db.run(`INSERT INTO tbl_usuarios (email, password) VALUES (?, ?)`,
+            [email, passwordHash],
             function(err: Error | null) {
                 if (err) {
-                    if (err.message.includes('UNIQUE constraint failed: users.username')) {
+                    if (err.message.includes('UNIQUE constraint failed: tbl_usuarios.email')) {
                         return res.status(409).json({ error: 'Este nombre de usuario ya existe.' });
                     }
                     return res.status(500).json({ error: err.message });
@@ -30,7 +30,7 @@ export const registerUser = async (req: Request, res: Response) => {
                 res.status(201).json({
                     message: "Usuario registrado con éxito",
                     userId: this.lastID,
-                    username: username
+                    username: email
                 });
             }
         );
@@ -40,13 +40,15 @@ export const registerUser = async (req: Request, res: Response) => {
 };
 
 export const loginUser = (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!username || !password) {
-        return res.status(400).json({ error: 'Usuario y contraseña son obligatorios.' });
+    console.log(req.body)
+
+    if (!email || !password) {
+        return res.status(400).json({ error: 'email y contraseña son obligatorios.' });
     }
 
-    db.get(`SELECT * FROM tbl_usuarios WHERE username = ?`, [username], async (err: Error | null, user: tbl_usuarios) => {
+    db.get(`SELECT * FROM tbl_usuarios WHERE email = ?`, [email], async (err: Error | null, user: tbl_usuarios) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -55,7 +57,7 @@ export const loginUser = (req: Request, res: Response) => {
         }
 
         try {
-            const isMatch = await bcrypt.compare(password, user.password_hash);
+            const isMatch = await bcrypt.compare(password, user.password);
 
             if (isMatch) {
                 // Generar JWT

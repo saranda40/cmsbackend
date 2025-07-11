@@ -1,17 +1,16 @@
 // src/server.ts
 import express from 'express';
-import dotenv from 'dotenv';
 import path from 'path';
 import cors from 'cors';
 import db from './config/db'; // Importar para asegurar la conexión y tablas
-import authRoutes from './routes/authRoutes';
 import landingPageRoutes from './routes/landingPageRoutes';
 import { corsConfig } from './config/cors';
-
+import router from './routes/authRoutes';
+import dotenv from 'dotenv';
 dotenv.config(); // Cargar variables de entorno
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.LOCAL_PORT || 3000;
 
 app.use(cors(corsConfig))
 // Middlewares
@@ -22,8 +21,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); // Asegúrate de que esta ruta sea correcta
 
 // Rutas
-app.use('/api/auth', authRoutes);
+
 app.use('/api/landing-pages', landingPageRoutes);
+app.use("/",router)
 
 // Ruta de prueba
 app.get('/', (req, res) => {
